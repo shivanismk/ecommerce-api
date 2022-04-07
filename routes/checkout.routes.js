@@ -9,8 +9,8 @@ const { verifyAccessToken } = require('../helpers/auth')
 
 router.post('/checkout', checkoutController.createCheckout)
 
-router.post('/checkoutt', checkoutController.goCheck)
+router.post('/payments/:id/capture', checkoutController.goCheck)
 router.get('/orders', checkoutController.getOrder)
 router.delete('/delete_order/:Oid',  checkoutController.deleteOrder)
-// router.post('/v1/customers', checkoutController.createCustomeres)
+router.post('/customers', checkoutController.createCustomeres)
 module.exports = router
