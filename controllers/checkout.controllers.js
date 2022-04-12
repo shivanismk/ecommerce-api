@@ -9,9 +9,9 @@ module.exports = {
       key_secret: "FZC2GqphbPEtH54SHchcgfe7",
     });
     const captureResult = await razorpay.customers.create({
-        name: "golu",
+        name: "golu1",
         contact: 9123456780,
-        email: "golu@example.com",
+        email: "golu1@example.com",
       }).then((res) => {
         return res;
       }).catch((err) => {
@@ -27,18 +27,25 @@ module.exports = {
   goCheck:  (req, res) => {
     const Razorpay = require("razorpay");
    
-    var instance = new Razorpay({ key_id: 'rzp_test_2RLLx1qMYTSvkf', key_secret: 'FZC2GqphbPEtH54SHchcgfe7' })
-    let paymentId=5
-    let amount=2222
-    let currency="INR"
-    instance.payments.capture(paymentId, amount, currency).then((res) => {
+    const  instance = new Razorpay({ key_id: 'rzp_test_2RLLx1qMYTSvkf', key_secret: 'FZC2GqphbPEtH54SHchcgfe7' })
+    
+   const order= instance.orders.create({
+      amount: 50000,
+      currency: "INR",
+      receipt: "receipt#1",
+      notes: {
+        key1: "value3",
+        key2: "value2"
+      }
+    })
+    .then((res) => {
         return res;
       }).catch((err) => {
         return err;
       });
     res.status(200).json({
       success: true,
-      customer: instance,
+      customer: order,
     });
     
   },

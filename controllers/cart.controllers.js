@@ -8,24 +8,29 @@ module.exports = {
 
         Product.findOne({
             _id:req.params.id
-        }).then((product) => {
-            if(product){
-                return true;
-            }
-            return false;
-        }).then((canAddProduct) => {
-            if(canAddProduct) {
-                let newProduct = new Score({
-                   
-                    // userid:req.body.userid,
-                    prodid: req.params.id
+        // })
+        // .then((product) => {
+        //     if(product){
+        //         return true;
+        //     }
+        //     return false;
+        }).then((Product) => {
+            if(Product) {
+                let newCart = new Cart({
+                    prodid: req.params.id,
+                    pname:Product.pname,
+                    price:Product.price,
+                    url:Product.url,
+                    quantity:Product.quantity,
+                    size:Product.size
+                    
                 });
-                newScore.save().then(( ) =>{
+                newCart.save().then(( ) =>{
                     // res.send(newscoreDoc);
                     res.status(201).json({
                         success: true,
                         massage: 'success',
-                        cart: newProduct
+                        cart: newCart
                     })
                 })
             }else{
