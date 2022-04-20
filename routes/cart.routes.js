@@ -4,9 +4,9 @@ const { verifyAccessToken } = require('../helpers/auth')
 
 const cartController = require('../controllers/cart.controllers')
 
-router.post('/addCart/:id',verifyAccessToken,  cartController.createCart)
-router.get('/viewCart',verifyAccessToken, cartController.viewCart)
-router.delete('/deleteCartProduct/:id',verifyAccessToken,  cartController.deleteCartProduct)
+router.post('/addCart/:id',verifyAccessToken,cartController.createCart)
+router.get('/viewCart/:id',verifyAccessToken, cartController.viewCart)
+router.delete('/deleteCartProduct/:id', cartController.deleteCartProduct)
 
 router.delete('/deleteCart',  cartController.deleteCart)
 

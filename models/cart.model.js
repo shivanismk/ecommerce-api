@@ -23,13 +23,13 @@ const cartSchema = new Schema({
         type: String,
         default: null
     },
-    Quantity: {
+    quantity: {
         type: Number,
-        default:1
+        
     },
     size: {
         type: String,
-        default:null
+        
     },
 
 

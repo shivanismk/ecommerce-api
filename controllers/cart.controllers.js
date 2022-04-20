@@ -1,31 +1,34 @@
 const { Product } = require('../models/product.model')
 const { Cart } = require('../models/cart.model')
 const { product } = require('./product.controllers')
-
+const { User } = require('../models/users.model')
 module.exports = {
 
-    createCart: async (req, res) => {
-
-        Product.findOne({
-            _id:req.params.id
+      createCart: async (req, res) => {
+        // User.findById({
+        //     id: req.body.id
         // })
-        // .then((product) => {
-        //     if(product){
-        //         return true;
-        //     }
-        //     return false;
+     Product.findOne({
+            _id: req.params.id
+            // })
+            // .then((product) => {
+            //     if(product){
+            //         return true;
+            //     }
+            //     return false;
         }).then((Product) => {
-            if(Product) {
+            if (Product) {
                 let newCart = new Cart({
+                    userid: req.body.userid,
                     prodid: req.params.id,
-                    pname:Product.pname,
-                    price:Product.price,
-                    url:Product.url,
-                    quantity:Product.quantity,
-                    size:Product.size
-                    
+                    pname: Product.pname,
+                    price: Product.price,
+                    url: Product.url,
+                    quantity: req.body.quantity,
+                    size: req.body.size
+
                 });
-                newCart.save().then(( ) =>{
+                newCart.save().then(() => {
                     // res.send(newscoreDoc);
                     res.status(201).json({
                         success: true,
@@ -33,7 +36,7 @@ module.exports = {
                         cart: newCart
                     })
                 })
-            }else{
+            } else {
                 res.sendStatus(404);
             }
         })
@@ -43,17 +46,25 @@ module.exports = {
 
     viewCart: async (req, res) => {
         try {
-            const cart = await Cart.find({}, { __v: 0 })
-            if (!cart) {
-                res.status(404).json({
-                    success: false,
-                    message: 'product does not exists'
+            await Cart.find({
+                userid: req.params.id
+                }).then((cart) => {
+                    console.log(cart);
+                    res.send(cart);
+                
                 })
-            }
-            res.status(200).json({
-                success: true,
-                cart: cart
-            })
+            
+            // const cart = await Cart.find({}, { __v: 0 })
+            // if (!cart) {
+            //     res.status(404).json({
+            //         success: false,
+            //         message: 'product does not exists'
+            //     })
+            // }
+            // res.status(200).json({
+            //     success: true,
+            //     cart: cart
+            // })
         } catch (error) {
             res.status(500).json({
                 success: false,

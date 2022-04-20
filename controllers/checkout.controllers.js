@@ -1,17 +1,18 @@
 const { Checkout } = require("../models/checkout.model");
 const { Cart } = require("../models/cart.model");
+const crypto = require("crypto");
 
 module.exports = {
   createCustomeres: async (req, res) => {
     const Razorpay = require("razorpay");
     const razorpay = new Razorpay({
-      key_id: "rzp_test_2RLLx1qMYTSvkf",
-      key_secret: "FZC2GqphbPEtH54SHchcgfe7",
+      key_id: "rzp_test_82j3HyXl4PhfTE",
+      key_secret: "8r35NT3l2S2j4BFF4f35TFE5",
     });
     const captureResult = await razorpay.customers.create({
-        name: "golu1",
+        name: "shiv",
         contact: 9123456780,
-        email: "golu1@example.com",
+        email: "shiv@example.com",
       }).then((res) => {
         return res;
       }).catch((err) => {
@@ -25,28 +26,31 @@ module.exports = {
   },
 
   goCheck:  (req, res) => {
+    console.log(req.body);
     const Razorpay = require("razorpay");
-   
-    const  instance = new Razorpay({ key_id: 'rzp_test_2RLLx1qMYTSvkf', key_secret: 'FZC2GqphbPEtH54SHchcgfe7' })
-    
-   const order= instance.orders.create({
-      amount: 50000,
-      currency: "INR",
-      receipt: "receipt#1",
-      notes: {
-        key1: "value3",
-        key2: "value2"
-      }
-    })
-    .then((res) => {
-        return res;
-      }).catch((err) => {
-        return err;
+    try {
+      const instance = new Razorpay({
+        key_id: "rzp_test_82j3HyXl4PhfTE",
+        key_secret: "8r35NT3l2S2j4BFF4f35TFE5",
       });
-    res.status(200).json({
-      success: true,
-      customer: order,
-    });
+  
+      const options = {
+        amount: req.body.amount * 100,
+        currency: "INR",
+        receipt: crypto.randomBytes(10).toString("hex"),
+      };
+  
+      instance.orders.create(options, (error, order) => {
+        if (error) {
+          console.log(error);
+          return res.status(500).json({ message: "Something Went Wrong!" });
+        }
+        res.status(200).json({ data: order });
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Internal Server Error!" });
+      console.log(error);
+    }
     
   },
 
